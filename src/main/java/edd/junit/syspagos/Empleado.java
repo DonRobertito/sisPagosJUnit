@@ -17,7 +17,7 @@ public class Empleado {
     Prima prima;
 
 
-    public Prima calcularPrima (String numEmpleado, String nomEmpleado, String mesesT, String dir)
+    public Prima calcularPrima(String numEmpleado, String nomEmpleado, String mesesT, String dir)
             throws NumeroEmpleadoException, NombreEmpleadoException, MesesTrabajoException, CargoException, RuntimeOperationsException {
 
         establecerNumero_empleado(numEmpleado);
@@ -25,19 +25,20 @@ public class Empleado {
         estableceMeses_Trabajo(mesesT);
         establecerSerDirectivo(dir);
 
-        if (getDirectivo() && getMeses_trabajo() >=12){
+        if (getDirectivo() && getMeses_trabajo() >= 12) {
             setPrima(Prima.P1);
             return Prima.P1;
         }
-        if(!getDirectivo() && getMeses_trabajo() >12){
+        //Los empleados no directivos con 12 o mas meses de trabajo deben recibir P2. Condicion del if arreglada.
+        if (!getDirectivo() && getMeses_trabajo() >= 12) {
             setPrima(Prima.P2);
             return Prima.P2;
         }
-        if (getDirectivo() && getMeses_trabajo()<12){
+        if (getDirectivo() && getMeses_trabajo() < 12) {
             setPrima(Prima.P3);
             return Prima.P3;
         }
-        if (!getDirectivo() && getMeses_trabajo()<12){
+        if (!getDirectivo() && getMeses_trabajo() < 12) {
             setPrima(Prima.P4);
             return Prima.P4;
         }
@@ -47,9 +48,9 @@ public class Empleado {
 
     public void establecerNumero_empleado(String nEmpleado) throws NumeroEmpleadoException {
         int n;
-        if (nEmpleado.matches("^\\d+$")){
-            n= Integer.parseInt(nEmpleado);
-            if (n>000 && n < 1000 ){
+        if (nEmpleado.matches("^\\d+$")) {
+            n = Integer.parseInt(nEmpleado);
+            if (n > 000 && n < 1000) {
                 setNumero_empleado(n);
                 return;
             }
@@ -59,9 +60,9 @@ public class Empleado {
     }
 
     public void estableceNombre_empleado(String nombre_empleado) throws NombreEmpleadoException {
-
-        if (Pattern.matches("^[a-zA-Z0-9]*$", nombre_empleado)){
-            if (nombre_empleado.length()>=10){
+        //Se permitian nombres cuya longitud fuera mayor que 10. Segundo if corregido.
+        if (Pattern.matches("^[a-zA-Z0-9]*$", nombre_empleado)) {
+            if (nombre_empleado.length() == 10) {
                 setNombre_empleado(nombre_empleado);
                 return;
             }
@@ -70,11 +71,12 @@ public class Empleado {
     }
 
     public void estableceMeses_Trabajo(String mesesT) throws MesesTrabajoException {
+        //setter equivocado
         int n;
-        if (mesesT.matches("^\\d+$")){
-            n= Integer.parseInt(mesesT);
-            if (n>=000 && n < 1000 ){
-                setNumero_empleado(n);
+        if (mesesT.matches("^\\d+$")) {
+            n = Integer.parseInt(mesesT);
+            if (n >= 000 && n < 1000) {
+                setMeses_trabajo(n);
                 return;
             }
         }
@@ -82,13 +84,15 @@ public class Empleado {
     }
 
     public void establecerSerDirectivo(String directivo) throws CargoException {
-        char[] caracter= directivo.toCharArray();
-        if (directivo.length()==1){
-            if (caracter[0] == '+' ){
+        //Siempre lanza la excepcion, añadido return dentro del if.
+        char[] caracter = directivo.toCharArray();
+        if (directivo.length() == 1) {
+            if (caracter[0] == '+') {
                 setDirectivo(true);
-            }else if(caracter[0]=='-'){
+            } else if (caracter[0] == '-') {
                 setDirectivo(false);
             }
+            return;
         }
         throw new CargoException();
     }
